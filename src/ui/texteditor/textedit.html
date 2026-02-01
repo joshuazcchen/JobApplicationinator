@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="textedit.css">
+</head>
+
+<body>
+
+    <div id="view-home">
+        <h2>Job Applicationinator</h2>
+
+        <div class="card">
+            <h3>Keywords</h3>
+            <p><small>Upload JSON</small></p>
+            <input type="file" id="jsonUpload" accept=".json">
+            <label>JSON Editor:</label>
+            <textarea id="jsonEditor" spellcheck="false"></textarea>
+            <button id="btn-reset-json"
+                style="background:#ffb9c0; color:white; border:none; padding:8px 12px; border-radius:4px; cursor:pointer; margin-top:5px; width:100%;">Reset</button>
+        </div>
+
+        <!-- TODO: make colour usage consistent throughout the entire project -->
+        <div class="card">
+            <h3>Resume Template</h3>
+            <p><small>Import Template</small></p>
+            <input type="file" id="templateUpload" accept=".html,.htm">
+            <p id="templateStatus" style="color: #0015ff; font-size: 12px;">Using Default</p>
+            <button id="btn-reset-template"
+                style="background:#ffb9c0; color:white; border:none; padding:8px 12px; border-radius:4px; cursor:pointer; margin-top:5px; width:100%;">Unload</button>
+        </div>
+
+        <button id="btn-goto-editor" class="btn-primary">Edit</button>
+    </div>
+
+
+    <div id="view-editor" class="hidden">
+        <div id="editor-toolbar">
+            <button id="btn-back">Back</button>
+            <div style="flex:1;"></div>
+            <button id="btn-marker">Insert Marker</button>
+            <button id="btn-marker-rmv">Remove Marker</button>
+            <button id="btn-export">Export to PDF</button>
+        </div>
+
+        <div id="editor-main">
+            <div id="matches-sidebar">
+                <div style="padding:10px; background:#ddd; font-weight:bold;">Categories</div>
+                <div id="matches-list">Scanning (if this takes too long its probably broken) (11)</div>
+            </div>
+
+            <div id="doc-area">
+                <div id="paper" contenteditable="true">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="formatting-toolbar"
+        style="padding: 10px; background: #eee; border-bottom: 1px solid #ccc; display: flex; gap: 10px; align-items: center;">
+
+        <select id="fontFamily" style="width: 150px;">
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Arial">Arial</option>
+            <option value="Calibri">Calibri</option>
+            <option value="Trebuchet MS">Trebuchet MS</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Tahoma">Tahoma</option>
+            <option value="Palatino Linotype">Palatino</option>
+        </select>
+
+        <select id="fontSize" style="width: 70px;">
+            <option value="8pt">8pt</option>
+            <option value="9pt">9pt</option>
+            <option value="10pt">10pt</option>
+            <option value="10.5pt">10.5pt</option>
+            <option value="11pt">11pt</option>
+            <option value="12pt">12pt</option>
+            <option value="14pt">14pt</option>
+            <option value="16pt">16pt</option>
+            <option value="18pt">18pt</option>
+            <option value="24pt">24pt</option>
+            <option value="36pt">36pt</option>
+        </select>
+
+        <div style="width: 1px; height: 20px; background: #d9d9d9;"></div> <button id="btn-bold"
+            style="font-weight: bold; width: 30px;">B</button>
+        <button id="btn-italic" style="font-style: italic; width: 30px;">I</button>
+        <button id="btn-underline" style="text-decoration: underline; width: 30px;">U</button>
+        <div style="flex:1;"></div>
+
+        <button id="btn-marker-rmv" title="Remove markers" style="font-size: 12px; cursor: pointer;">
+            Remove markers
+        </button>
+    </div>
+
+    <script type="module" src="./textedit.ts"></script>
+</body>
+
+</html>
