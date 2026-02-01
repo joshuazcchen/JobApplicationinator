@@ -1,4 +1,5 @@
 import html2pdf from 'html2pdf.js';
+import JSZip from 'jszip';
 
 interface KeywordData {
     keywords: string[];
@@ -75,24 +76,67 @@ function applyTemplate(html: string) {
     currentMarker = document.getElementById('active-marker');
 }
 
-document.getElementById('templateUpload')?.addEventListener('change', (e) => {
+document.getElementById('templateUpload')?.addEventListener('change', async (e) => {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-        const fullHtml = ev.target?.result as string;
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(fullHtml, 'text/html');
+    if (file.name.endsWith('.zip')) {
+        try {
+            const zip = await JSZip.loadAsync(file);
+            const htmlFileName = Object.keys(zip.files).find(name => name.endsWith('.html'));
 
-        let cssString = "";
-        doc.querySelectorAll('style').forEach(s => cssString += s.outerHTML);
-        const finalHtml = `${cssString}\n${doc.body.innerHTML}`;
+            if (!htmlFileName) {
+                alert("No HTML file found in this zip!");
+                return;
+            }
 
-        chrome.storage.local.set({ customTemplate: finalHtml });
-        applyTemplate(finalHtml);
-    };
-    reader.readAsText(file);
+            let htmlContent = await zip.file(htmlFileName)!.async("string");
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlContent, 'text/html');
+            const images = doc.querySelectorAll('img');
+
+            const imagePromises = Array.from(images).map(async (img) => {
+                const src = img.getAttribute('src');
+                if (!src) return;
+                const zipPath = decodeURIComponent(src);
+
+                const imgFile = zip.file(zipPath);
+                if (imgFile) {
+                    const base64 = await imgFile.async("base64");
+                    const ext = zipPath.split('.').pop()?.toLowerCase();
+                    const mime = ext === 'png' ? 'image/png' : (ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg' : 'image/gif');
+                    img.src = `data:${mime};base64,${base64}`;
+                }
+            });
+
+            await Promise.all(imagePromises);
+            let cssString = "";
+            doc.querySelectorAll('style').forEach(s => cssString += s.outerHTML);
+            const finalHtml = `${cssString}\n${doc.body.innerHTML}`;
+
+            chrome.storage.local.set({ customTemplate: finalHtml });
+            applyTemplate(finalHtml);
+
+        } catch (err) {
+            console.error(err);
+            alert("Failed to read zip file. See console for details.");
+        }
+    } else {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const fullHtml = ev.target?.result as string;
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(fullHtml, 'text/html');
+
+            let cssString = "";
+            doc.querySelectorAll('style').forEach(s => cssString += s.outerHTML);
+            const finalHtml = `${cssString}\n${doc.body.innerHTML}`;
+
+            chrome.storage.local.set({ customTemplate: finalHtml });
+            applyTemplate(finalHtml);
+        };
+        reader.readAsText(file);
+    }
 });
 
 document.getElementById('btn-reset-template')?.addEventListener('click', () => {
