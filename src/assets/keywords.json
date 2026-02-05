@@ -1,18 +1,3 @@
-{
-  "Financial Leadership": {
-    "keywords": ["budget", "finance", "forecasting", "treasury", "fiscal"],
-    "description": "<p>My tenure as <b>Director of Finance for the UofT Student Team for Amateur Rocketry</b> has honed my ability to manage complex technical budgets. I successfully oversaw financial allocation for high-stakes engineering projects, ensuring resource efficiency without compromising on technical goals.</p>"
-  },
-  "Python & Automation": {
-    "keywords": ["python", "scripting", "automation", "scraping", "optimization"],
-    "description": "<p>I have a strong background in using Python for practical automation. For example, I developed a <b>custom web scraper to optimize reward point redemptions</b>, which required reverse-engineering web protocols and handling large datasets efficiently.</p>"
-  },
-  "Reinforcement Learning": {
-    "keywords": ["ai", "machine learning", "training", "model", "rl"],
-    "description": "<p>My passion for AI is demonstrated by my work on a <b>Reinforcement Learning-based movement sandbox</b>. Built in LuaU, this project involved designing reward functions and training agents to navigate complex 3D environments autonomously.</p>"
-  },
-  "Web Development": {
-    "keywords": ["html", "css", "javascript", "react", "frontend"],
-    "description": "<p>I bring hands-on web development experience, having served as a <b>Web Design Instructor at Thunderbird Community Centre</b>. This role required not only technical mastery of HTML/CSS but also the ability to communicate complex technical concepts clearly to others.</p>"
-  }
-}
+in the interest of not using AI, the initial demo template is removed.
+
+Also this file isn't used in the later version anyways.
